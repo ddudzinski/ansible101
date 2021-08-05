@@ -3,13 +3,19 @@
     become: true
     tasks:
       - name: update OS to latest version
-        yum: name=* state=latest
+        apt: 
+          name: '*'
+          state: latest
 
       - name: install apache2
-        yum: name=apache2 state=present
+        apt: 
+          name: apache2
+          state: present
 
       - name: delete default index.html file
-        file: path=/var/www/html/index.html state=absent
+        file: 
+          path: /var/www/html/index.html
+          state: absent
 
       - name: create directory for github
         file:
