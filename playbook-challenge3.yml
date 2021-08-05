@@ -1,0 +1,30 @@
+---
+  - hosts: server1
+    become: true
+    tasks:
+      - name: update OS to latest version
+        yum: name=* state=latest
+
+      - name: install apache2
+        yum: name=apache2 state=present
+
+      - name: delete default index.html file
+        file: path=/var/www/html/index.html state=absent
+
+      - name: create directory for github
+        file:
+          path: /var/www/github
+          state: directory
+      
+      - name:  clone github repo
+        git:
+          repo: 'https://github.com/ddudzinski/ansible101.git'
+          dest: /var/www/github
+
+      - name: copy index file to /var/www/html directory
+        command: mv /var/www/github/index.html /var/www/html
+        notify: start apache
+
+    handlers:
+      - name: start apache
+        service: name=apache2 state=started
