@@ -1,0 +1,24 @@
+---
+  - hosts: local
+    #become: true
+    vars:
+      server1: "{{ lookup('csvfile', 'server1 file=./assignment_hosts.csv delimiter=, col=2') }}"
+      server2: "{{ lookup('csvfile', 'server2 file=./assignment_hosts.csv delimiter=, col=2') }}"
+
+    vars_files:
+      - ./addresses.yml
+
+    tasks:
+      - name: displays the addresses of the servers from the variables file
+        debug:
+          msg:
+            - "server1: {{ server1 }}"
+            - "server2: {{ server2 }}"
+
+      - name: displays the address of each server in the CSV file with index
+        debug:
+          msg: "{{ index }}: {{ item }}"
+        loop: "{{ addresses }}"
+        loop_control:
+          index_var: index
+             

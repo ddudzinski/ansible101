@@ -28,7 +28,7 @@
           dest: /var/www/github
 
       - name: copy index file to /var/www/html directory
-        command: mv /var/www/github/index.html /var/www/html
+        command: cp /var/www/github/index.html /var/www/html
         notify: start apache
 
     handlers:
